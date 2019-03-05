@@ -1,15 +1,15 @@
 #VS_Code 
-/.vscode
+.vscode
 
 # dependencies
 node_modules
 
 # testing
-/coverage
+coverage
 
 # production
-/build
-/dist
+build
+dist
 
 # misc
 .DS_Store
@@ -24,3 +24,5 @@ yarn-error.log*
 
 *.orig
 package-lock.json
+
+.env

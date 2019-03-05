@@ -10,7 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@blockone/eosjs-ledger-signature-provider": "^0.0.2",
     "@blockone/universal-authenticator-library": "^0.0.33",
     "eosjs": "^20.0.0-56c14a9.0",
     "text-encoding": "^0.7.0"

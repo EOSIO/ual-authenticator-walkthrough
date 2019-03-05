@@ -1,44 +1,32 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { Ledger } from 'authenticator'
 import { UALProvider, withUAL } from '@blockone/universal-authenticator-library-react'
 
-const chainId = 'e70aaab8997e1dfce58fbfac80cbbb8fecec7b99cf982a9444273cbc64c41473'
-const rpcEndpoints = [{
-  protocol: "https",
-  host: "jungle2.cryptolions.io",
-  port: 443
-}]
-
-const transferData = {
-  account: '',
-  recipient: '',
-  quantity: '0.0001 EOS',
-}
-
-const generateTransaction = ({ account, recipient, quantity, memo = '' }) => ({
+const demoTransaction = {
   actions: [{
     account: 'eosio.token',
     name: 'transfer',
-    authorization: [{
-      actor: account,
-      permission: 'active',
-    }],
-    data: {
-      from: account,
-      to: recipient,
-      quantity,
-      memo,
-    },
+    authorization: [{ actor: '', permission: 'active' }],
+    data: { from: '', to: '', quantity: '0.0001 EOS', memo: '' },
   }],
-})
+}
 
 class TestApp extends Component {
+  static propTypes = {
+    ual: PropTypes.shape({
+      activeUser: PropTypes.object,
+      activeAuthenticator: PropTypes.object,
+      logout: PropTypes.func,
+      showModal: PropTypes.func,
+    }).isRequired,
+  }
+
   state = { message: '' }
 
   transfer = async () => {
     const { ual } = this.props
     try {
-      const demoTransaction = generateTransaction(transferData)
       const result = await ual.activeUser.signTransaction(demoTransaction, { expireSeconds: 60, blocksBehind: 3 })
       this.setState({ message: `Transfer to ${transferData.to} Successful!` }, () => {
         setTimeout(this.resetMessage, 5000)
@@ -60,17 +48,17 @@ class TestApp extends Component {
           </div>
         )
       }
-      <button onClick={this.transfer} style={[styles.button, styles.blueBG]}>
+      <button type='button' onClick={this.transfer} style={{ ...styles.button, ...styles.blueBG }}>
         <p style={styles.baseText}>{`Transfer 1 EOS to ${transferData.to}`}</p>
       </button>
-      <button onClick={this.props.ual.logout} style={styles.logout}>
+      <button type='button' onClick={this.props.ual.logout} style={styles.logout}>
         <p>Logout</p>
       </button>
     </>
   )
 
   renderLoginButton = () => (
-    <button onClick={this.props.ual.showModal} style={styles.button}>
+    <button type='button' onClick={this.props.ual.showModal} style={styles.button}>
       <p style={[styles.buttonText, styles.baseText]}>LOGIN</p>
     </button>
   )
@@ -92,6 +80,7 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     height: '100vh',
+    flexDirection: 'column',
   },
   button: {
     padding: '10px 60px',
@@ -123,8 +112,13 @@ const styles = {
   },
 }
 
+const chainId = REACT_APP_CHAIN_ID
+const rpcEndpoints = [{
+  protocol: process.env.REACT_APP_PROTOCOL,
+  host: process.env.REACT_APP_HOST,
+  port: process.env.REACT_APP_PORT,
+}]
 const exampleNet = { chainId, rpcEndpoints }
-
 const TestAppConsumer = withUAL(TestApp)
 const ledger = new Ledger([exampleNet])
 
