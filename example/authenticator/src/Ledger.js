@@ -1,87 +1,109 @@
-import { Authenticator } from '@blockone/universal-authenticator-library'
+import { Authenticator, UALLoggedInAuthType, UALAccountName, UALErrorType } from '@blockone/universal-authenticator-library'
+import { LedgerUser } from './LedgerUser'
+
+import { UALLedgerError } from './UALLedgerError'
+import { Logo } from './logo'
 
 export class Ledger extends Authenticator {
-  /**
-   * Called after `shouldRender` and should be used to handle any async actions required to initialize the authenticator
-   */
+  onBoardingLink = 'https://www.ledger.com'
+  users = []
+  error = null
+  chains
+  options
+
+  constructor(chains, options) {
+    super(chains, options)
+    this.chains = chains
+  }
+
   async init() {}
 
-
-  /**
-   * Resets the authenticator to its initial, default state then calls `init` method
-   */
   reset() {}
 
-
-  /**
-   * Returns true if the authenticator has errored while initializing.
-   */
-  isErrored() {}
+  isErrored() {
+    return false
+  }
   
+  getOnboardingLink() {
+    return this.onBoardingLink
+  }
 
-  /**
-   * Returns a URL where the user can download and install the underlying authenticator
-   * if it is not found by the UAL Authenticator.
-   */
-  getOnboardingLink() {}
+  getError() {
+    return null
+  }
 
+  isLoading() {
+    return false
+  }
 
-  /**
-   * Returns error (if available) if the authenticator has errored while initializing.
-   */
-  getError() {}
+  getStyle() {
+    return {
+      icon: Logo,
+      text: 'Ledger',
+      textColor: '#FFFFFF',
+      background: '#44bdbd',
+    }
+  }
 
+  shouldRender() {
+    if (window.location.protocol !== 'https:') {
+      return false
+    }
 
-  /**
-   * Returns true if the authenticator is loading while initializing its internal state.
-   */
-  isLoading() {}
+    return true
+  }
 
+  shouldAutoLogin() {
+    return false
+  }
 
-  /**
-   * Returns the style of the Button that will be rendered.
-   */
-  getStyle() {}
+  async shouldRequestAccountName() {
+    return true
+  }
 
+  async login(accountName) {
+    for (const chain of this.chains) {
+      const user = new LedgerUser(chain, accountName, this.requiresGetKeyConfirmation(accountName))
+      await user.init()
+      const isValid = await user.isAccountValid()
+      if (!isValid) {
+        const message = `Error logging into account "${accountName}"`
+        const type = UALErrorType.Login
+        const cause = null
+        throw new UALLedgerError(message, type, cause)
+      }
+      this.users.push(user)
+    }
 
-  /**
-   * Returns whether or not the button should render based on the operating environment and other factors.
-   * ie. If your Authenticator App does not support mobile, it returns false when running in a mobile browser.
-   */
-  shouldRender() {}
+    return this.users 
+  }
 
+  async logout() {
+    try {
+      for (const user of this.users) {
+        user.signatureProvider.cleanUp()
+        user.signatureProvider.clearCachedKeys()
+      }
+      this.users = []
+    } catch (e) {
+      const message = 'Error logging out'
+      const type = UALErrorType.Logout
+      const cause = e
+      throw new UALLedgerError(message, type, cause)
+    } 
+  }
 
-  /**
-   * Returns whether or not the dapp should attempt to auto login with the Authenticator app.
-   * Auto login will only occur when there is only one Authenticator that returns shouldRender() true and
-   * shouldAutoLogin() true.
-   */
-  shouldAutoLogin() {}
+  requiresGetKeyConfirmation(accountName) {
+    if (!accountName) {
+      return true
+    }
 
+    const type = window.localStorage.getItem(UALLoggedInAuthType)
+    const account = window.localStorage.getItem(UALAccountName)
+    if (account === accountName && type === 'Ledger') {
+      return false
+    }
 
-  /**
-   * Returns whether or not the button should show an account name input field.
-   * This is for Authenticators that do not have a concept of account names.
-   */
-  async shouldRequestAccountName() {}
-
-
-  /**
-   * Login using the Authenticator App. This can return one or more users depending on multiple chain support.
-   *
-   * @param accountName  The account name of the user for Authenticators that do not store accounts (optional)
-   */
-  async login(accountName) {}
-  
-
-  /**
-   * Logs the user out of the dapp. This will be strongly dependent on each Authenticator app's patterns.
-   */
-  async logout() {}
-
-
-  /**
-   * Returns true if user confirmation is required for `getKeys`
-   */
-  requiresGetKeyConfirmation() {}
+    return true
+  }
 }
