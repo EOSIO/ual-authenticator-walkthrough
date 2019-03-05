@@ -1,0 +1,24 @@
+{
+  "name": "authenticator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "babel src -d dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@blockone/eosjs-ledger-signature-provider": "^0.0.2",
+    "@blockone/universal-authenticator-library": "^0.0.33",
+    "eosjs": "^20.0.0-56c14a9.0",
+    "text-encoding": "^0.7.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.3.4",
+    "@babel/plugin-proposal-class-properties": "^7.3.4",
+    "@babel/preset-env": "^7.3.4"
+  }
+}
