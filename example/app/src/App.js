@@ -87,18 +87,20 @@ class TestApp extends Component {
 
 const styles = {
   container: {
-    flex: 1,
+    display: 'flex',
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'column',
+    height: '100vh',
   },
   button: {
-    paddingVertical: 40,
-    paddingHorizontal: 80,
+    padding: '10px 60px',
     backgroundColor: '#EA2E2E',
     textAlign: 'center',
     borderRadius: 5,
+    color: '#FFFFFF',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
   logout: {
     marginTop: 20,
@@ -112,9 +114,7 @@ const styles = {
   },
   announcementBar: {
     width: '100%',
-    paddingHorizontal: 10,
-    paddingTop: 50,
-    paddingBottom: 20,
+    padding: '10px 50px 10px 20px',
     textAlign: 'center',
     backgroundColor: '#3de13d',
     top: 0,
