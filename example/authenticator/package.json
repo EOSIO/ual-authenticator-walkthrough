@@ -16,6 +16,7 @@
     "Randy Torres"
   ],
   "dependencies": {
+    "@blockone/eosjs-ledger-signature-provider": "^0.0.3",
     "@blockone/universal-authenticator-library": "^0.0.33",
     "eosjs": "^20.0.0-56c14a9.0",
     "text-encoding": "^0.7.0"

@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Ledger } from 'authenticator'
