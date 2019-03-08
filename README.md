@@ -1,24 +1,24 @@
 # UAL Authenticator Tutorial 🔐
 
-This tutorial walks through the steps required to create a Ledger [Authenticator](https://github.com/EOSIO/universal-authenticator-library/tree/develop/packages/universal-authenticator-library). 
+This tutorial walks through the steps required to create a [UAL](https://github.com/EOSIO/universal-authenticator-library/tree/develop/packages/universal-authenticator-library) Ledger [Authenticator](https://github.com/EOSIO/universal-authenticator-library/blob/develop/packages/universal-authenticator-library/src/Authenticator.ts). 
 
 ## Overview
 
-The Universal Authenticator Library creates a single universal API which allows app developers to integrate ***multiple*** signing methods with just a few lines of code. This is done through custom `Authenticators`.
+The Universal Authenticator Library creates a single universal API which allows app developers to integrate ***multiple*** signature providers with just a few lines of code. This is done through custom `Authenticators`.
 
-An `Authenticator` represents the bridge between [UAL](https://github.com/EOSIO/universal-authenticator-library/tree/develop/packages/universal-authenticator-library), [EOSJS](https://github.com/EOSIO/eosjs), and a Custom Signing method
+An `Authenticator` represents the bridge between [UAL](https://github.com/EOSIO/universal-authenticator-library/tree/develop/packages/universal-authenticator-library), [EOSJS](https://github.com/EOSIO/eosjs), and a custom signature provider.
 
-A developer that wishes to add support for their signing method to UAL must create an `Authenticator` by implementing 2 classes. A `Authenticator` and `User`.
+A developer that wishes to add support for their signature provider to UAL must create an `Authenticator` by implementing 2 classes. A `Authenticator` and `User`.
 
 The `Authenticator` class represents the business logic behind the renderer, handles login/logout functionality and initializes the `User` class.
 
 Logging in returns 1 or more User objects. A `User` object provides the ability for an app developer to request the app `User` sign a transaction using whichever authenticator they selected when logging in.
 
-In this tutorial we are going to go through the steps of implementing our own `UAL Authenticator`, we'll be creating our own [ual-ledger](https://github.com/EOSIO/ual-ledger) Authenticator. I'll try to explain some of the implementation specific details for `ual-ledger` and show examples of other UAL Authenticators.
+In this tutorial I'll walk through the steps of implementing a custom `UAL Authenticator`, we'll be creating a [ual-ledger](https://github.com/EOSIO/ual-ledger) Authenticator. I'll try to explain some of the implementation specific details for `ual-ledger` and show examples of other UAL Authenticators.
 
-Each step in this tutorial has a correlating branch on github, they are labeled `step-1`, `step-2`, etc. Each step assumes you are starting at the correlating branch.
+Each step in this tutorial has a correlating branch on github labeled `step-1`, `step-2`, etc. Each step assumes you are starting at the correlating branch.
 
-At the end we'll be able to test out the Authenticator with an example app found in [example/app](./example/app).
+At the end we'll test the custom Authenticator with an example app found in [example/app](./example/app).
 
 ## Getting Started
 
@@ -61,26 +61,27 @@ Although not all methods may be necessary for your `Authenticator`, you're requi
 
 The key methods here are `init, getStyle, login, logout`.
 
-* **`init()`** - Should be used to handle any async operations required to initialize the authenticator. `isLoading()` should return true until all async operations in `init` are complete and the authenticator is ready to accept login/logout requests.
-* **`getStyle()`** - Gives you the ability to customize your `Authenticator` and how it is displayed to app users. 
-  ```javascript
-  getStyle() {
-    return {
-      // An icon displayed to app users when selecting their authentication method 
-      icon: './custom-icon.png',
-      // Name displayed to app users
-      text: 'Ledger',
-      // Background color displayed to app users who select your authenticator
-      background: '#44bdbd',
-      // Color of text used on top the `backgound` property above
-      textColor: '#FFFFFF',
+1. **`init()`** - Should be used to handle any async operations required to initialize the authenticator. `isLoading()` should return true until all async operations in `init` are complete and the authenticator is ready to accept login/logout requests.
+2. **`getStyle()`** - Gives you the ability to customize your `Authenticator` and how it is displayed to app users. 
+    ```javascript
+    getStyle() {
+      return {
+        // An icon displayed to app users when selecting their authentication method 
+        icon: './custom-icon.png',
+        // Name displayed to app users
+        text: 'Ledger',
+        // Background color displayed to app users who select your authenticator
+        background: '#44bdbd',
+        // Color of text used on top the `backgound` property above
+        textColor: '#FFFFFF',
+      }
     }
-  }
-  ```
-* **`login(accountName)`** - The implementation depends entirely on the signing method you are using, whether it supports multiple chains, and the communication protocol used. You'll need to create a new `User` class, verify the keys match the account provided, add the `User` to an array, and return the array of `User`'s. Otherwise throw an error with the appropriate messaging, this error will be displayed to the app user.
-    
+   ```
+3. **`login()`** - The implementation depends entirely on the signing method you are using, whether it supports multiple chains, and the communication protocol used. You'll need to create a new `User` class, verify the keys match the account provided, add the `User` to an array, and return the array of `User`'s. Otherwise throw an error with the appropriate messaging, this error will be displayed to the app user.
+
     **Here are variations of `login()` with a brief description of the different approaches.**
-    * [ual-ledger](https://github.com/EOSIO/ual-ledger/blob/develop/src/Ledger.ts#L48) - Ledger requires an `accountName` and calls `requiresGetKeyConfirmation` to determine if the app user has already confirmed the public key from their ledger device, if so they won't need to give permission again. By calling `LedgerUser.isAccountValid()` the authenticator utilizes the  [eosjs-ledger-signature-provider](https://github.com/EOSIO/private-eosjs-ledger-signature-provider) and communicates with the ledger device through the `U2F` protocol.
+
+   * [ual-ledger](https://github.com/EOSIO/ual-ledger/blob/develop/src/Ledger.ts#L48) - Ledger requires an `accountName` and calls `requiresGetKeyConfirmation` to determine if the app user has already confirmed the public key from their ledger device, if so they won't need to give permission again. By calling `LedgerUser.isAccountValid()` the authenticator utilizes the  [eosjs-ledger-signature-provider](https://github.com/EOSIO/private-eosjs-ledger-signature-provider) and communicates with the ledger device through the `U2F` protocol.
       ```javascript
       async login(accountName) {
         for (const chain of this.chains) {
@@ -100,85 +101,87 @@ The key methods here are `init, getStyle, login, logout`.
       }
       ```
 
-  * [ual-scatter](https://github.com/EOSIO/ual-scatter/blob/develop/src/Scatter.ts#L91) - Scatter Desktop ?
+    * [ual-scatter](https://github.com/EOSIO/ual-scatter/blob/develop/src/Scatter.ts#L91) - Scatter does not require an `accountName` parameter and uses the [Scatter-JS](https://github.com/GetScatter/scatter-js) library to communicate with [Scatter Desktop](https://get-scatter.com/).
+        ```javascript
+        async login() {
+          try {
+            for (const chain of this.chains) {
+              const user = new ScatterUser(chain, this.scatter)
+              await user.getKeys()
+              this.users.push(user)
+            }
+
+            return this.users
+          } catch (e) {
+            throw new UALScatterError(
+              'Unable to login',
+              UALErrorType.Login,
+              e)
+          }
+        }
+        ```
+    * [ual-lynx](https://github.com/EOSIO/ual-lynx/blob/develop/src/Lynx.ts#L102) - Lynx injects a `lynxMobile` object into the browsers global window object, by accessing `lynxMobile` we can call `requestSetAccount` and receive an object containing the account information of the account logged into the Lynx Wallet. 
+
       ```javascript
       async login() {
-        try {
-          for (const chain of this.chains) {
-            const user = new ScatterUser(chain, this.scatter)
-            await user.getKeys()
-            this.users.push(user)
+        if (this.users.length === 0) {
+          try {
+            const account = await window.lynxMobile.requestSetAccount()
+            this.users.push(new LynxUser(this.chains[0], account))
+          } catch (e) {
+            throw new UALLynxError(
+              'Unable to get the current account during login',
+              UALErrorType.Login,
+              e)
           }
-
-          return this.users
-        } catch (e) {
-          throw new UALScatterError(
-            'Unable to login',
-            UALErrorType.Login,
-            e)
         }
+
+        return this.users
       }
       ```
-  * [ual-lynx](https://github.com/EOSIO/ual-lynx/blob/develop/src/Lynx.ts#L102) - Lynx injects a `lynxMobile` object into the browsers global window object, by accessing `lynxMobile` we can call `requestSetAccount` and receive an object containing the account information of the account logged into the Lynx Wallet. 
 
-    ```javascript
-    async login() {
-      if (this.users.length === 0) {
-        try {
-          const account = await window.lynxMobile.requestSetAccount()
-          this.users.push(new LynxUser(this.chains[0], account))
-        } catch (e) {
-          throw new UALLynxError(
-            'Unable to get the current account during login',
-            UALErrorType.Login,
-            e)
-        }
-      }
+4. **`logout()`** - Responsible for terminating connections to external signing methods, if any exist and deleting user information that may have been cached in the `User` or `Authenticator` classes.
 
-      return this.users
-    }
-    ```
+    **Variations of `logout()`**
 
-* **`logout()`** - Responsible for terminating connections to external signing methods, if any exist and deleting user information that may have been cached in the `User` or `Authenticator` classes.
-  #### Variations of `logout()`
-  * [ual-ledger](https://github.com/EOSIO/ual-ledger/blob/develop/src/Ledger.ts#L65) - The [eosjs-ledger-signature-provider](https://github.com/EOSIO/private-eosjs-ledger-signature-provider) performs a simple caching of public keys that need to be cleared on logout. We accomplish this by calling `signatureProvider.clearCachedKeys()` and remove the logged in users by reassigning `this.users` to an empty array.
-
-    ```javascript
-    async logout() {
-      try {
-        for (const user of this.users) {
-          user.signatureProvider.cleanUp()
-          user.signatureProvider.clearCachedKeys()
-        }
-        this.users = []
-      } catch (e) {
-        const message = CONSTANTS.logoutMessage
-        const type = UALErrorType.Logout
-        const cause = e
-        throw new UALLedgerError(message, type, cause)
-      }
-    }
-    ```
-
-  * [ual-scatter](https://github.com/EOSIO/ual-scatter/blob/develop/src/Scatter.ts#L108) - Calling `this.scatter.logout()` removes the `Identity` from scatter utilizing scatters built in method for logging out.
-    ```javascript
-    async logout() {
-      try {
-        this.scatter.logout()
-      } catch (error) {
-        throw new UALScatterError('Error occurred during logout',
-          UALErrorType.Logout,
-          error)
-      }
-    }
-    ```
-   * [ual-lynx](https://github.com/EOSIO/ual-scatter/blob/develop/src/Scatter.ts#L108) - Since lynx does not provide a method of logging out we simple reassign `this.users` to an empty array.
+    * [ual-ledger](https://github.com/EOSIO/ual-ledger/blob/develop/src/Ledger.ts#L65) - The [eosjs-ledger-signature-provider](https://github.com/EOSIO/private-eosjs-ledger-signature-provider) performs a simple caching of public keys that need to be cleared on logout. We accomplish this by calling `signatureProvider.clearCachedKeys()` and remove the logged in users by reassigning `this.users` to an empty array.
 
       ```javascript
       async logout() {
-        this.users = []
+        try {
+          for (const user of this.users) {
+            user.signatureProvider.cleanUp()
+            user.signatureProvider.clearCachedKeys()
+          }
+          this.users = []
+        } catch (e) {
+          const message = CONSTANTS.logoutMessage
+          const type = UALErrorType.Logout
+          const cause = e
+          throw new UALLedgerError(message, type, cause)
+        }
       }
       ```
+
+    * [ual-scatter](https://github.com/EOSIO/ual-scatter/blob/develop/src/Scatter.ts#L108) - Calling `this.scatter.logout()` removes the `Identity` from scatter utilizing scatters built in method for logging out.
+      ```javascript
+      async logout() {
+        try {
+          this.scatter.logout()
+        } catch (error) {
+          throw new UALScatterError('Error occurred during logout',
+            UALErrorType.Logout,
+            error)
+        }
+      }
+      ```
+    * [ual-lynx](https://github.com/EOSIO/ual-scatter/blob/develop/src/Scatter.ts#L108) - Since lynx does not provide a method of logging out we simple reassign `this.users` to an empty array.
+
+        ```javascript
+        async logout() {
+          this.users = []
+        }
+        ```
 #### View the completed [Ledger.js](https://github.com/EOSIO/ual-authenticator-walkthrough/blob/step-4/example/authenticator/src/Ledger.js)
 
 
@@ -188,61 +191,61 @@ Your required to implement all abstract methods from the base [User](https://git
 
 The main methods to be implemented here are `getKeys, signTransaction, signArbitrary`.
 
-  *  **`getKeys()`**  - Calling this method should return an array of public keys 🔑, how the authenticator gets those keys depends on the signing method you are using and what protocol it uses. For example, `ual-ledger` uses the [eosjs-ledger-signature-provider](https://github.com/EOSIO/private-eosjs-ledger-signature-provider) to communicate with the Ledger device through a U2F protocol and `ual-scatter` simply returns the keys it has already received from the inital call to `scatter.getIdentity`.
+  1.  **`getKeys()`**  - Calling this method should return an array of public keys 🔑, how the authenticator gets those keys depends on the signing method you are using and what protocol it uses. For example, `ual-ledger` uses the [eosjs-ledger-signature-provider](https://github.com/EOSIO/private-eosjs-ledger-signature-provider) to communicate with the Ledger device through a U2F protocol and `ual-scatter` simply returns the keys it has already received from the inital call to `scatter.getIdentity`.
 
-  **Here are variations of `getKeys()`**
-  * `ual-ledger`
-    ```javascript
-    async getKeys() {
-      try {
-        const keys = await this.signatureProvider.getAvailableKeys(this.requestPermission)
-        return keys
-      } catch (error) {
-        const message = `Unable to getKeys for account ${this.accountName}.
-          Please make sure your ledger device is connected and unlocked`
-        const type = UALErrorType.DataRequest
-        const cause = error
-        throw new UALLedgerError(message, type, cause)
+      **Here are variations of `getKeys()`**
+      * `ual-ledger`
+        ```javascript
+        async getKeys() {
+          try {
+            const keys = await this.signatureProvider.getAvailableKeys(this.requestPermission)
+            return keys
+          } catch (error) {
+            const message = `Unable to getKeys for account ${this.accountName}.
+              Please make sure your ledger device is connected and unlocked`
+            const type = UALErrorType.DataRequest
+            const cause = error
+            throw new UALLedgerError(message, type, cause)
+          }
+        }
+        ```
+      * `ual-scatter`
+        ```javascript
+        async getKeys() {
+          if (!this.keys || this.keys.length === 0) {
+            // `refreshIdentity` calls `scatter.getIdentity` then
+            // sets the `keys` and `accountName` properties on the 
+            // `User` class
+            await this.refreshIdentity()
+          }
+
+          return this.keys
+        }
+        ```
+
+  2. **`signTransaction(transaction, config)`** - Exposes the same API as `Api.transact` in [eosjs](https://github.com/EOSIO/eosjs/blob/develop/src/eosjs-api.ts).
+
+  3. **`signArbitrary(publicKey, data, helpText)`** - A utility function to sign arbitrary data. If your authenticator does not support this type of signing you can simple return an error with the correct message.
+
+      **Example of an authenticator that does not support `signArbitrary`**
+      ```javascript
+      // LedgerUser.js
+
+      async signArbitrary() {
+        throw new UALLedgerError(
+          `${Name} does not currently support signArbitrary`,
+          UALErrorType.Unsupported,
+          null,
+        )
       }
-    }
-    ```
-  * `ual-scatter`
-    ```javascript
-    async getKeys() {
-      if (!this.keys || this.keys.length === 0) {
-        // `refreshIdentity` calls `scatter.getIdentity` then
-        // sets the `keys` and `accountName` properties on the 
-        // `User` class
-        await this.refreshIdentity()
-      }
-
-      return this.keys
-    }
-    ```
-
-  * **`signTransaction(transaction, config)`** - Exposes the same API as `Api.transact` in [eosjs](https://github.com/EOSIO/eosjs/blob/develop/src/eosjs-api.ts).
-
-  * **`signArbitrary(publicKey, data, helpText)`** - A utility function to sign arbitrary data. If your authenticator does not support this type of signing you can simple return an error with the correct message.
-
-    **Example of an authenticator that does not support `signArbitrary`**
-    ```javascript
-    // LedgerUser.js
-
-    async signArbitrary() {
-      throw new UALLedgerError(
-        `${Name} does not currently support signArbitrary`,
-        UALErrorType.Unsupported,
-        null,
-      )
-    }
-    ```
+      ```
 
 #### View the completed [LedgerUser.js](https://github.com/EOSIO/ual-authenticator-walkthrough/blob/step-5/example/authenticator/src/LedgerUser.js)
 
 ## **Step 5**: Test your Authenticator 🔑🔓
 Now that we've implemented all the abstract methods on our `Ledger` and `LedgerUser` classes lets test them in the example react app provided in [examples](./examples/app).
 
-Run the commands below and open your browser to http://localhost:3000.
+Run the commands below and open your browser to http://localhost:3000. 
 
 ```bash
 ~ cd examples/app
@@ -250,5 +253,4 @@ Run the commands below and open your browser to http://localhost:3000.
 ~ yarn start
 ```
 
-## Recap
-TODO
+ ![ual screenshot](/assets/ual-screenshot.png)
