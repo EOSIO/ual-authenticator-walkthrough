@@ -4,19 +4,19 @@ This tutorial walks through the steps required to create a Ledger [Authenticator
 
 ## Overview
 
-Universal Authenticator Library creates a single universal API which allows app developers to integrate ***multiple*** signing methods with just a few lines of code. This is done through custom `Authenticators`.
+The Universal Authenticator Library creates a single universal API which allows app developers to integrate ***multiple*** signing methods with just a few lines of code. This is done through custom `Authenticators`.
 
-An `Authenticator` represents the bridge between `UAL, EOSJS, and a Custom Signing method`  
+An `Authenticator` represents the bridge between [UAL](https://github.com/EOSIO/universal-authenticator-library/tree/develop/packages/universal-authenticator-library), [EOSJS](https://github.com/EOSIO/eosjs), and a Custom Signing method
 
-A developer that wishes to add support for their signing method to UAL must create an `Authenticator` by implementing 2 classes. A `Authenticator` and a `User`.
+A developer that wishes to add support for their signing method to UAL must create an `Authenticator` by implementing 2 classes. A `Authenticator` and `User`.
 
 The `Authenticator` class represents the business logic behind the renderer, handles login/logout functionality and initializes the `User` class.
 
 Logging in returns 1 or more User objects. A `User` object provides the ability for an app developer to request the app `User` sign a transaction using whichever authenticator they selected when logging in.
 
-In this tutorial we are going to go through the steps of implementing your own `UAL Authenticator`, we'll be creating our own [ual-ledger](https://github.com/EOSIO/ual-ledger) Authenticator. I'll try to explain some of the implementation specific details for `ual-ledger` and show examples of other UAL Authenticators.
+In this tutorial we are going to go through the steps of implementing our own `UAL Authenticator`, we'll be creating our own [ual-ledger](https://github.com/EOSIO/ual-ledger) Authenticator. I'll try to explain some of the implementation specific details for `ual-ledger` and show examples of other UAL Authenticators.
 
-Each step in this tutorial has a correlating branch on github, they are label `step-1`, `step-2`, etc. Each step assumes you are starting at the correlating branch.
+Each step in this tutorial has a correlating branch on github, they are labeled `step-1`, `step-2`, etc. Each step assumes you are starting at the correlating branch.
 
 At the end we'll be able to test out the Authenticator with an example app found in [example/app](./example/app).
 
