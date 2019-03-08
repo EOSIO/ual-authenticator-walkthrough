@@ -49,6 +49,18 @@ export * from './Ledger'
 export * from './LedgerUser'
 ```
 
+Lastly we need to create a special error type that allows UAL to handle/display errors correctly. Create a new file `src/UALLedgerError.js` with the contents below.
+
+```javascript
+import { UALError } from '@blockone/universal-authenticator-library'
+
+export class UALLedgerError extends UALError {
+  constructor(message, type, cause) {
+    super(message, type, cause, 'Ledger')
+  }
+}
+```
+
 #### View the completed [Ledger.js](https://github.com/EOSIO/ual-authenticator-walkthrough/blob/step-2/example/authenticator/src/Ledger.js)
 #### View the completed  [LedgerUser.js](https://github.com/EOSIO/ual-authenticator-walkthrough/blob/step-2/example/authenticator/src/LedgerUser.js)
 
