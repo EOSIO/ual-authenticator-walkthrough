@@ -57,7 +57,7 @@ export * from './LedgerUser'
 
 The internal business logic of each Authenticator method will depend on the signing method you are using. The only limitations are the input/return types must match the abstract method it is implementing. 
 
-Although not all methods may be necessary for your `Authenticator`, you are required to implement ***all*** abstract methods from the base [Authenticator](https://github.com/EOSIO/universal-authenticator-library/blob/develop/packages/universal-authenticator-library/src/Authenticator.ts) class.
+Although not all methods may be necessary for your `Authenticator`, you're required to implement ***all*** abstract methods from the base [Authenticator](https://github.com/EOSIO/universal-authenticator-library/blob/develop/packages/universal-authenticator-library/src/Authenticator.ts) class.
 
 The key methods here are `init, getStyle, login, logout`.
 
@@ -72,7 +72,7 @@ The key methods here are `init, getStyle, login, logout`.
       text: 'Ledger',
       // Background color displayed to app users who select your authenticator
       background: '#44bdbd',
-      // Color of text used with the `backgound` property above
+      // Color of text used on top the `backgound` property above
       textColor: '#FFFFFF',
     }
   }
@@ -141,7 +141,7 @@ The key methods here are `init, getStyle, login, logout`.
 
 * **`logout()`** - Responsible for terminating connections to external signing methods, if any exist and deleting user information that may have been cached in the `User` or `Authenticator` classes.
   #### Variations of `logout()`
-  * [ual-ledger](https://github.com/EOSIO/ual-ledger/blob/develop/src/Ledger.ts#L65) - The [eosjs-ledger-signature-provider](https://github.com/EOSIO/private-eosjs-ledger-signature-provider) performs a simple caching of public keys that need to be cleared on logout. We accomplish this by calling `signatureProvider.clearCachedKeys()` and remove and logged in users by reassigning `this.users` to an empty array.
+  * [ual-ledger](https://github.com/EOSIO/ual-ledger/blob/develop/src/Ledger.ts#L65) - The [eosjs-ledger-signature-provider](https://github.com/EOSIO/private-eosjs-ledger-signature-provider) performs a simple caching of public keys that need to be cleared on logout. We accomplish this by calling `signatureProvider.clearCachedKeys()` and remove the logged in users by reassigning `this.users` to an empty array.
 
     ```javascript
     async logout() {
@@ -179,7 +179,7 @@ The key methods here are `init, getStyle, login, logout`.
         this.users = []
       }
       ```
-#### View the completed [Ledger.js](https://github.com/EOSIO/ual-authenticator-walkthrough/blob/step-3/example/authenticator/src/Ledger.js)
+#### View the completed [Ledger.js](https://github.com/EOSIO/ual-authenticator-walkthrough/blob/step-4/example/authenticator/src/Ledger.js)
 
 
 ## **Step 4**: Implementing the `User` class
@@ -188,10 +188,10 @@ Your required to implement all abstract methods from the base [User](https://git
 
 The main methods to be implemented here are `getKeys, signTransaction, signArbitrary`.
 
-  *  **`getKeys()`**  - Calling this method should return an array of public keys 🔑, how the authenticator gets those keys depends on the signing method you are using and what protocol it uses. For example, `ual-ledger` uses the [eosjs-ledger-signature-provider](https://github.com/EOSIO/private-eosjs-ledger-signature-provider) to communicate with the Ledger device through a U2F protocol and `ual-scatter` simple returns the keys it has already received from the inital call to `scatter.getIdentity`.
+  *  **`getKeys()`**  - Calling this method should return an array of public keys 🔑, how the authenticator gets those keys depends on the signing method you are using and what protocol it uses. For example, `ual-ledger` uses the [eosjs-ledger-signature-provider](https://github.com/EOSIO/private-eosjs-ledger-signature-provider) to communicate with the Ledger device through a U2F protocol and `ual-scatter` simply returns the keys it has already received from the inital call to `scatter.getIdentity`.
 
-  **Here are variations of `getKeys()` with a brief description of the different approaches.**
-  * `ual-ledger`:
+  **Here are variations of `getKeys()`**
+  * `ual-ledger`
     ```javascript
     async getKeys() {
       try {
@@ -206,19 +206,19 @@ The main methods to be implemented here are `getKeys, signTransaction, signArbit
       }
     }
     ```
-  * `ual-scatter`:
-  ```javascript
-  async getKeys() {
-    if (!this.keys || this.keys.length === 0) {
-      // `refreshIdentity` calls `scatter.getIdentity` then
-      // sets the `keys` and `accountName` properties on the 
-      // `User` class
-      await this.refreshIdentity()
-    }
+  * `ual-scatter`
+    ```javascript
+    async getKeys() {
+      if (!this.keys || this.keys.length === 0) {
+        // `refreshIdentity` calls `scatter.getIdentity` then
+        // sets the `keys` and `accountName` properties on the 
+        // `User` class
+        await this.refreshIdentity()
+      }
 
-    return this.keys
-  }
-  ```
+      return this.keys
+    }
+    ```
 
   * **`signTransaction(transaction, config)`** - Exposes the same API as `Api.transact` in [eosjs](https://github.com/EOSIO/eosjs/blob/develop/src/eosjs-api.ts).
 
@@ -237,7 +237,7 @@ The main methods to be implemented here are `getKeys, signTransaction, signArbit
     }
     ```
 
-#### View the completed [LedgerUser.js](https://github.com/EOSIO/ual-authenticator-walkthrough/blob/step-4/example/authenticator/src/LedgerUser.js)
+#### View the completed [LedgerUser.js](https://github.com/EOSIO/ual-authenticator-walkthrough/blob/step-5/example/authenticator/src/LedgerUser.js)
 
 ## **Step 5**: Test your Authenticator 🔑🔓
 Now that we've implemented all the abstract methods on our `Ledger` and `LedgerUser` classes lets test them in the example react app provided in [examples](./examples/app).
