@@ -8,7 +8,7 @@ The Universal Authenticator Library creates a single universal API which allows 
 
 An `Authenticator` represents the bridge between [UAL](https://github.com/EOSIO/universal-authenticator-library/tree/develop/packages/universal-authenticator-library), [EOSJS](https://github.com/EOSIO/eosjs), and a custom signature provider.
 
-A developer that wishes to add support for their signature provider to UAL must create an `Authenticator` by implementing 2 classes. A `Authenticator` and `User`.
+A developer that wishes to add support for their signature provider to UAL must create an `Authenticator` by implementing 2 classes. An `Authenticator` and a `User`.
 
 The `Authenticator` class represents the business logic behind the renderer, handles login/logout functionality and initializes the `User` class.
 
@@ -140,7 +140,7 @@ The key methods here are `init, getStyle, login, logout`.
       }
       ```
 
-4. **`logout()`** - Responsible for terminating connections to external signing methods, if any exist and deleting user information that may have been cached in the `User` or `Authenticator` classes.
+4. **`logout()`** - Responsible for terminating connections to external signing methods, if any exist, and deleting user information that may have been cached in the `User` or `Authenticator` classes.
 
     **Variations of `logout()`**
 
@@ -187,11 +187,11 @@ The key methods here are `init, getStyle, login, logout`.
 
 ## **Step 4**: Implementing the `User` class
 
-Your required to implement all abstract methods from the base [User](https://github.com/EOSIO/universal-authenticator-library/blob/develop/packages/universal-authenticator-library/src/User.ts) class.
+You are required to implement all abstract methods from the base [User](https://github.com/EOSIO/universal-authenticator-library/blob/develop/packages/universal-authenticator-library/src/User.ts) class.
 
 The main methods to be implemented here are `getKeys, signTransaction, signArbitrary`.
 
-  1.  **`getKeys()`**  - Calling this method should return an array of public keys 🔑, how the authenticator gets those keys depends on the signing method you are using and what protocol it uses. For example, `ual-ledger` uses the [eosjs-ledger-signature-provider](https://github.com/EOSIO/private-eosjs-ledger-signature-provider) to communicate with the Ledger device through a U2F protocol and `ual-scatter` simply returns the keys it has already received from the inital call to `scatter.getIdentity`.
+  1.  **`getKeys()`**  - Calling this method should return an array of public keys 🔑. How the authenticator gets those keys depends on the signing method you are using and what protocol it uses. For example, `ual-ledger` uses the [eosjs-ledger-signature-provider](https://github.com/EOSIO/private-eosjs-ledger-signature-provider) to communicate with the Ledger device through the U2F protocol and `ual-scatter` simply returns the keys it has already received from the inital call to `scatter.getIdentity`.
 
       **Here are variations of `getKeys()`**
       * `ual-ledger`
