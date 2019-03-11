@@ -6,7 +6,7 @@ This tutorial walks through the steps required to create a [UAL](https://github.
 
 The Universal Authenticator Library creates a single universal API which allows app developers to integrate ***multiple*** signature providers with just a few lines of code. This is done through custom `Authenticators`.
 
-An `Authenticator` represents the bridge between [UAL](https://github.com/EOSIO/universal-authenticator-library/tree/develop/packages/universal-authenticator-library), [EOSJS](https://github.com/EOSIO/eosjs), and a custom signature provider.
+An `Authenticator` represents the bridge between [UAL](https://github.com/EOSIO/universal-authenticator-library/tree/develop/packages/universal-authenticator-library) and a custom signing method.
 
 A developer that wishes to add support for their signature provider to UAL must create an `Authenticator` by implementing 2 classes. A `Authenticator` and `User`.
 
@@ -245,12 +245,6 @@ The main methods to be implemented here are `getKeys, signTransaction, signArbit
 ## **Step 5**: Test your Authenticator 🔑🔓
 Now that we've implemented all the abstract methods on our `Ledger` and `LedgerUser` classes lets test them in the example react app provided in [examples](./examples/app).
 
-Run the commands below and open your browser to http://localhost:3000. 
-
-```bash
-~ cd examples/app
-~ yarn
-~ yarn start
-```
+Go to [examples](./examples/app) and follow the instructions.
 
  ![ual screenshot](/assets/ual-screenshot.png)

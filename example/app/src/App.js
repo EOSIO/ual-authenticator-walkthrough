@@ -3,14 +3,15 @@ import PropTypes from 'prop-types'
 import { Ledger } from 'authenticator'
 import { UALProvider, withUAL } from '@blockone/universal-authenticator-library-react'
 
-const demoTransaction = {
+const receiver = process.env.REACT_APP_TO
+const getTransaction = (account) => ({
   actions: [{
     account: 'eosio.token',
     name: 'transfer',
-    authorization: [{ actor: '', permission: 'active' }],
-    data: { from: '', to: '', quantity: '0.0001 EOS', memo: '' },
+    authorization: [{ actor: account, permission: 'active' }],
+    data: { from: account, to: receiver, quantity: '0.0001 EOS', memo: '' },
   }],
-}
+})
 
 class TestApp extends Component {
   static propTypes = {
@@ -25,10 +26,12 @@ class TestApp extends Component {
   state = { message: '' }
 
   transfer = async () => {
-    const { ual } = this.props
+    const { ual: { activeUser } } = this.props
     try {
-      const result = await ual.activeUser.signTransaction(demoTransaction, { expireSeconds: 60, blocksBehind: 3 })
-      this.setState({ message: `Transfer to ${transferData.to} Successful!` }, () => {
+      const accountName = await activeUser.getAccountName()
+      const demoTransaction = getTransaction(accountName)
+      const result = await activeUser.signTransaction(demoTransaction, { expireSeconds: 60, blocksBehind: 3 })
+      this.setState({ message: `Transfer Successful!` }, () => {
         setTimeout(this.resetMessage, 5000)
       })
       console.info('SUCCESS:', result)
@@ -49,7 +52,7 @@ class TestApp extends Component {
         )
       }
       <button type='button' onClick={this.transfer} style={{ ...styles.button, ...styles.blueBG }}>
-        <p style={styles.baseText}>{`Transfer 1 EOS to ${transferData.to}`}</p>
+        <p style={styles.baseText}>{`Transfer 1 EOS`}</p>
       </button>
       <button type='button' onClick={this.props.ual.logout} style={styles.logout}>
         <p>Logout</p>
@@ -112,7 +115,7 @@ const styles = {
   },
 }
 
-const chainId = REACT_APP_CHAIN_ID
+const chainId = process.env.REACT_APP_CHAIN_ID
 const rpcEndpoints = [{
   protocol: process.env.REACT_APP_PROTOCOL,
   host: process.env.REACT_APP_HOST,
