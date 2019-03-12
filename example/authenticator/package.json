@@ -7,8 +7,14 @@
     "build": "babel src -d dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "license": "MIT",
+  "author": {
+    "name": "block.one",
+    "url": "https://block.one/"
+  },
+  "collaborators": [
+    "Randy Torres"
+  ],
   "dependencies": {
     "@blockone/universal-authenticator-library": "^0.0.33",
     "eosjs": "^20.0.0-56c14a9.0",
