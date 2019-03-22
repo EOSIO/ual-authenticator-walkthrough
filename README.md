@@ -1,6 +1,6 @@
 # UAL Authenticator Tutorial 🔐
 
-This tutorial walks through the steps required to create a [UAL](https://github.com/EOSIO/universal-authenticator-library/tree/develop/packages/universal-authenticator-library) Ledger [Authenticator](https://github.com/EOSIO/universal-authenticator-library/blob/develop/packages/universal-authenticator-library/src/Authenticator.ts). 
+This tutorial walks through the steps required to create a [UAL](https://github.com/EOSIO/universal-authenticator-library/tree/develop/packages/universal-authenticator-library) for Ledger [Authenticator](https://github.com/EOSIO/universal-authenticator-library/blob/develop/packages/universal-authenticator-library/src/Authenticator.ts). 
 
 ## Overview
 
@@ -247,4 +247,4 @@ Now that we've implemented all the abstract methods on our `Ledger` and `LedgerU
 
 Go to [examples](./examples/app) and follow the instructions.
 
- ![ual screenshot](/assets/ual-screenshot.png)
+ <img src="./assets/ual-screenshot.png" alt="ual screenshot" width="400">
