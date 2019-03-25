@@ -250,7 +250,7 @@ Go to [examples](./examples/app) and follow the instructions.
  <img src="./assets/ual-screenshot.png" alt="ual screenshot" width="400">
 
 ## Contribution
-Check out the [Contributing](./CONTRIBUTING.md) guide and please adhere to the [Code of Conduct](#)
+Check out the [Contributing](./CONTRIBUTING.md) guide and please adhere to the [Code of Conduct](./CONTRIBUTING.md#Conduct)
 
 ## License
 [MIT licensed](./LICENSE)
