@@ -249,6 +249,8 @@ Go to [examples](./examples/app) and follow the instructions.
 
  <img src="./assets/ual-screenshot.png" alt="ual screenshot" width="400">
 
+*All product and company names are trademarks™ or registered® trademarks of their respective holders. Use of them does not imply any affiliation with or endorsement by them.*
+
 ## Contribution
 Check out the [Contributing](./CONTRIBUTING.md) guide and please adhere to the [Code of Conduct](./CONTRIBUTING.md#Conduct)
 
