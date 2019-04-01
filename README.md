@@ -1,6 +1,6 @@
 # UAL New Authenticator Walkthrough 🔐
 
-This tutorial walks through the steps required to create a [UAL](https://github.com/EOSIO/universal-authenticator-library/tree/develop/packages/universal-authenticator-library) for Ledger [Authenticator](https://github.com/EOSIO/universal-authenticator-library/blob/develop/packages/universal-authenticator-library/src/Authenticator.ts). 
+This tutorial walks through the steps required to create a [UAL](https://github.com/EOSIO/universal-authenticator-library) for Ledger [Authenticator](https://github.com/EOSIO/universal-authenticator-library/blob/develop/src/Authenticator.ts). 
 
 ![EOSIO Labs](https://img.shields.io/badge/EOSIO-Labs-5cb3ff.svg)
 
@@ -12,7 +12,7 @@ EOSIO Labs repositories are experimental.  Developers in the community are encou
 
 The Universal Authenticator Library creates a single universal API which allows app developers to integrate ***multiple*** signature providers with just a few lines of code. This is done through custom `Authenticators`.
 
-An `Authenticator` represents the bridge between [UAL](https://github.com/EOSIO/universal-authenticator-library/tree/develop/packages/universal-authenticator-library) and a custom signing method.
+An `Authenticator` represents the bridge between [UAL](https://github.com/EOSIO/universal-authenticator-library) and a custom signing method.
 
 A developer that wishes to add support for their signature provider to UAL must create an `Authenticator` by implementing 2 classes. An `Authenticator` and a `User`.
 
@@ -63,7 +63,7 @@ export * from './LedgerUser'
 
 The internal business logic of each Authenticator method will depend on the signing method you are using. The only limitations are the input/return types must match the abstract method it is implementing. 
 
-Although not all methods may be necessary for your `Authenticator`, you're required to implement ***all*** abstract methods from the base [Authenticator](https://github.com/EOSIO/universal-authenticator-library/blob/develop/packages/universal-authenticator-library/src/Authenticator.ts) class.
+Although not all methods may be necessary for your `Authenticator`, you're required to implement ***all*** abstract methods from the base [Authenticator](https://github.com/EOSIO/universal-authenticator-library/blob/develop/src/Authenticator.ts) class.
 
 The key methods here are `init, getStyle, login, logout`.
 
@@ -87,7 +87,7 @@ The key methods here are `init, getStyle, login, logout`.
 
     **Here are variations of `login()` with a brief description of the different approaches.**
 
-   * [ual-ledger](https://github.com/EOSIO/ual-ledger/blob/develop/src/Ledger.ts#L48) - Ledger requires an `accountName` and calls `requiresGetKeyConfirmation` to determine if the app user has already confirmed the public key from their ledger device, if so they won't need to give permission again. By calling `LedgerUser.isAccountValid()` the authenticator utilizes the  [eosjs-ledger-signature-provider](https://github.com/EOSIO/private-eosjs-ledger-signature-provider) and communicates with the ledger device through the `U2F` protocol.
+   * [ual-ledger](https://github.com/EOSIO/ual-ledger/blob/develop/src/Ledger.ts#L48) - Ledger requires an `accountName` and calls `requiresGetKeyConfirmation` to determine if the app user has already confirmed the public key from their ledger device, if so they won't need to give permission again. By calling `LedgerUser.isAccountValid()` the authenticator utilizes the  [eosjs-ledger-signature-provider](https://github.com/EOSIO/eosjs-ledger-signature-provider) and communicates with the ledger device through the `U2F` protocol.
       ```javascript
       async login(accountName) {
         for (const chain of this.chains) {
@@ -150,7 +150,7 @@ The key methods here are `init, getStyle, login, logout`.
 
     **Variations of `logout()`**
 
-    * [ual-ledger](https://github.com/EOSIO/ual-ledger/blob/develop/src/Ledger.ts#L65) - The [eosjs-ledger-signature-provider](https://github.com/EOSIO/private-eosjs-ledger-signature-provider) performs a simple caching of public keys that need to be cleared on logout. We accomplish this by calling `signatureProvider.clearCachedKeys()` and remove the logged in users by reassigning `this.users` to an empty array.
+    * [ual-ledger](https://github.com/EOSIO/ual-ledger/blob/develop/src/Ledger.ts#L65) - The [eosjs-ledger-signature-provider](https://github.com/EOSIO/eosjs-ledger-signature-provider) performs a simple caching of public keys that need to be cleared on logout. We accomplish this by calling `signatureProvider.clearCachedKeys()` and remove the logged in users by reassigning `this.users` to an empty array.
 
       ```javascript
       async logout() {
@@ -193,11 +193,11 @@ The key methods here are `init, getStyle, login, logout`.
 
 ## **Step 4**: Implementing the `User` class
 
-You are required to implement all abstract methods from the base [User](https://github.com/EOSIO/universal-authenticator-library/blob/develop/packages/universal-authenticator-library/src/User.ts) class.
+You are required to implement all abstract methods from the base [User](https://github.com/EOSIO/universal-authenticator-library/blob/develop/src/User.ts) class.
 
 The main methods to be implemented here are `getKeys, signTransaction, signArbitrary`.
 
-  1.  **`getKeys()`**  - Calling this method should return an array of public keys 🔑. How the authenticator gets those keys depends on the signing method you are using and what protocol it uses. For example, `ual-ledger` uses the [eosjs-ledger-signature-provider](https://github.com/EOSIO/private-eosjs-ledger-signature-provider) to communicate with the Ledger device through the U2F protocol and `ual-scatter` simply returns the keys it has already received from the inital call to `scatter.getIdentity`.
+  1.  **`getKeys()`**  - Calling this method should return an array of public keys 🔑. How the authenticator gets those keys depends on the signing method you are using and what protocol it uses. For example, `ual-ledger` uses the [eosjs-ledger-signature-provider](https://github.com/EOSIO/eosjs-ledger-signature-provider) to communicate with the Ledger device through the U2F protocol and `ual-scatter` simply returns the keys it has already received from the inital call to `scatter.getIdentity`.
 
       **Here are variations of `getKeys()`**
       * `ual-ledger`
