@@ -1,4 +1,4 @@
-# UAL Authenticator Tutorial 🔐
+# UAL New Authenticator Walkthrough 🔐
 
 This tutorial walks through the steps required to create a [UAL](https://github.com/EOSIO/universal-authenticator-library/tree/develop/packages/universal-authenticator-library) for Ledger [Authenticator](https://github.com/EOSIO/universal-authenticator-library/blob/develop/packages/universal-authenticator-library/src/Authenticator.ts). 
 
