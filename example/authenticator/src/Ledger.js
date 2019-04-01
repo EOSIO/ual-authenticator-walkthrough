@@ -1,4 +1,4 @@
-import { Authenticator } from '@blockone/universal-authenticator-library'
+import { Authenticator } from 'universal-authenticator-library'
 
 export class Ledger extends Authenticator {
   /**

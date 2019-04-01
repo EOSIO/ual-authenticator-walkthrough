@@ -1,4 +1,4 @@
-import { UALError } from '@blockone/universal-authenticator-library'
+import { UALError } from 'universal-authenticator-library'
 
 export class UALLedgerError extends UALError {
   constructor(message, type, cause) {
