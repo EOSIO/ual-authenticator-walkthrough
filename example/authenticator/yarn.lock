@@ -629,11 +629,6 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
-"@blockone/universal-authenticator-library@^0.0.33":
-  version "0.0.33"
-  resolved "https://registry.yarnpkg.com/@blockone/universal-authenticator-library/-/universal-authenticator-library-0.0.33.tgz#759f9b81bdbb81066df12ea8f9279bf87a459127"
-  integrity sha512-GRrSo83o7ko0xDKoUvL1nL3V3u2QNrBLIlrUF/gWaBn/81GPjA8etcq+ok+jn6/4vGlum5nJtuV5MyIRUqQg9g==
-
 abbrev@1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
@@ -1063,10 +1058,10 @@ eosjs-ecc@4.0.4:
     ecurve "^1.0.5"
     randombytes "^2.0.5"
 
-eosjs@^20.0.0-56c14a9.0:
-  version "20.0.0-ffffff.0"
-  resolved "https://registry.yarnpkg.com/eosjs/-/eosjs-20.0.0-ffffff.0.tgz#7d984a14566c0dcf37510a24f50227e986dc8a77"
-  integrity sha512-j6kV8ZGZ8fE00nGnjvj5NnnWH+7FmeyAVajt6CnX+oshGVULadufipTucap/pUEdI3pme4G/rwCzHBTgJuh4kw==
+eosjs@20.0.0:
+  version "20.0.0"
+  resolved "https://registry.yarnpkg.com/eosjs/-/eosjs-20.0.0.tgz#43940abfe15cd191ce4027d60294036e914613e9"
+  integrity sha512-Ak9CPtZgCFayUmq43X3Nsn4v67lkLfSzEdTUfMk1XAWA5s4HRn7lBTeTeDCzJ/rggi+dZ170VeJwc5T3gPk4HQ==
   dependencies:
     babel-runtime "6.26.0"
     eosjs-ecc "4.0.4"
@@ -2240,6 +2235,11 @@ union-value@^1.0.0:
     get-value "^2.0.6"
     is-extendable "^0.1.1"
     set-value "^0.4.3"
+
+universal-authenticator-library@0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/universal-authenticator-library/-/universal-authenticator-library-0.1.0.tgz#187e6a85f43e75d4d76b66c228c9e4b59770d4af"
+  integrity sha512-45nl80BWf+9WA8vTMXunMicZmHPm4wWdxNnSlL65cCP4OjA1ra4IuH+T7+Ko3P6IfXSfS9+VNCuXai3fip+taA==
 
 unset-value@^1.0.0:
   version "1.0.0"
