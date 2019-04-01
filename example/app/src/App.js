@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Ledger } from 'authenticator'
-import { UALProvider, withUAL } from '@blockone/universal-authenticator-library-react'
+import { UALProvider, withUAL } from 'ual-reactjs-renderer'
 
 const receiver = process.env.REACT_APP_TO
 const getTransaction = (account) => ({
