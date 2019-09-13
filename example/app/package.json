@@ -1,6 +1,6 @@
 {
   "name": "example",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "license": "MIT",
   "author": {
@@ -8,14 +8,17 @@
     "url": "https://block.one/"
   },
   "collaborators": [
-    "Randy Torres"
+    "Randy Torres",
+    "Mike Manfredi"
   ],
   "dependencies": {
-    "ual-reactjs-renderer": "0.1.0",
+    "ual-reactjs-renderer": "0.1.5",
     "authenticator": "file:../authenticator",
-    "react": "^16.8.3",
-    "react-dom": "^16.8.3",
-    "react-scripts": "2.1.5"
+    "react": "16.8.3",
+    "react-dom": "16.8.3"
+  },
+  "devDependencies": {
+    "react-scripts": "3.1.1"
   },
   "scripts": {
     "start": "react-scripts start",
