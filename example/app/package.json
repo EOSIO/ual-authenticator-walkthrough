@@ -18,15 +18,15 @@
     "react-dom": "16.13.0"
   },
   "devDependencies": {
+    "@blockone/eslint-config-blockone": "^3.0.0",
+    "eslint": "^6.8.0",
     "react-scripts": "^3.4.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
+    "test": "react-scripts test",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx src"
   },
   "browserslist": [
     ">0.2%",
