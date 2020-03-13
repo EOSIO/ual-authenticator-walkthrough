@@ -1,0 +1,6 @@
+{
+  "extends": "@blockone/blockone",
+  "rules": {
+    "no-console": "off"
+  }
+}
