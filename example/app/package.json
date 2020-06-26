@@ -1,6 +1,6 @@
 {
   "name": "example",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "private": true,
   "license": "MIT",
   "author": {
@@ -12,7 +12,7 @@
     "Mike Manfredi"
   ],
   "dependencies": {
-    "ual-reactjs-renderer": "0.2.0",
+    "ual-reactjs-renderer": "0.3.0",
     "authenticator": "file:../authenticator",
     "react": "16.13.0",
     "react-dom": "16.13.0"

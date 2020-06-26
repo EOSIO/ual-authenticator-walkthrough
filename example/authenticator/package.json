@@ -1,6 +1,6 @@
 {
   "name": "authenticator",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -17,7 +17,7 @@
     "Mike Manfredi"
   ],
   "dependencies": {
-    "universal-authenticator-library": "0.2.0",
+    "universal-authenticator-library": "0.3.0",
     "eosjs": "20.0.3"
   },
   "devDependencies": {
