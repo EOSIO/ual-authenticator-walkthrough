@@ -1,6 +1,6 @@
 # UAL New Authenticator Walkthrough 🔐
 
-This tutorial walks through the steps required to create a [UAL](https://github.com/EOSIO/universal-authenticator-library) for Ledger [Authenticator](https://github.com/EOSIO/universal-authenticator-library/blob/develop/src/Authenticator.ts). 
+This tutorial walks through the steps required to create a [UAL](https://github.com/EOSIO/universal-authenticator-library) for Ledger [Authenticator](https://github.com/EOSIO/universal-authenticator-library/blob/develop/src/Authenticator.ts).
 
 ![EOSIO Labs](https://img.shields.io/badge/EOSIO-Labs-5cb3ff.svg)
 
@@ -28,7 +28,7 @@ At the end we'll test the custom Authenticator with an example app found in [exa
 
 ## Getting Started
 
-## **Step 1**: Project setup 
+## **Step 1**: Project setup
 
 
 ```bash
@@ -61,18 +61,18 @@ export * from './LedgerUser'
 
 ## **Step 3**: Implementing the `Authenticator` class
 
-The internal business logic of each Authenticator method will depend on the signing method you are using. The only limitations are the input/return types must match the abstract method it is implementing. 
+The internal business logic of each Authenticator method will depend on the signing method you are using. The only limitations are the input/return types must match the abstract method it is implementing.
 
 Although not all methods may be necessary for your `Authenticator`, you're required to implement ***all*** abstract methods from the base [Authenticator](https://github.com/EOSIO/universal-authenticator-library/blob/develop/src/Authenticator.ts) class.
 
 The key methods here are `init, getStyle, login, logout`.
 
 1. **`init()`** - Should be used to handle any async operations required to initialize the authenticator. `isLoading()` should return true until all async operations in `init` are complete and the authenticator is ready to accept login/logout requests.
-2. **`getStyle()`** - Gives you the ability to customize your `Authenticator` and how it is displayed to app users. 
+2. **`getStyle()`** - Gives you the ability to customize your `Authenticator` and how it is displayed to app users.
     ```javascript
     getStyle() {
       return {
-        // An icon displayed to app users when selecting their authentication method 
+        // An icon displayed to app users when selecting their authentication method
         icon: './custom-icon.png',
         // Name displayed to app users
         text: 'Ledger',
@@ -126,7 +126,7 @@ The key methods here are `init, getStyle, login, logout`.
           }
         }
         ```
-    * [ual-lynx](https://github.com/EOSIO/ual-lynx/blob/develop/src/Lynx.ts#L102) - Lynx injects a `lynxMobile` object into the browsers global window object, by accessing `lynxMobile` we can call `requestSetAccount` and receive an object containing the account information of the account logged into the Lynx Wallet. 
+    * [ual-lynx](https://github.com/EOSIO/ual-lynx/blob/develop/src/Lynx.ts#L102) - Lynx injects a `lynxMobile` object into the browsers global window object, by accessing `lynxMobile` we can call `requestSetAccount` and receive an object containing the account information of the account logged into the Lynx Wallet.
 
       ```javascript
       async login() {
@@ -220,7 +220,7 @@ The main methods to be implemented here are `getKeys, signTransaction, signArbit
         async getKeys() {
           if (!this.keys || this.keys.length === 0) {
             // `refreshIdentity` calls `scatter.getIdentity` then
-            // sets the `keys` and `accountName` properties on the 
+            // sets the `keys` and `accountName` properties on the
             // `User` class
             await this.refreshIdentity()
           }
@@ -257,14 +257,18 @@ Go to [examples](./examples/app) and follow the instructions.
 
 *All product and company names are trademarks™ or registered® trademarks of their respective holders. Use of them does not imply any affiliation with or endorsement by them.*
 
-## Contribution
-Check out the [Contributing](./CONTRIBUTING.md) guide and please adhere to the [Code of Conduct](./CONTRIBUTING.md#Conduct)
+## Contributing
+
+[Contributing Guide](./CONTRIBUTING.md)
+
+[Code of Conduct](./CONTRIBUTING.md#conduct)
 
 ## License
-[MIT licensed](./LICENSE)
+
+[MIT](./LICENSE)
 
 ## Important
 
-See LICENSE for copyright and license terms.  Block.one makes its contribution on a voluntary basis as a member of the EOSIO community and is not responsible for ensuring the overall performance of the software or any related applications.  We make no representation, warranty, guarantee or undertaking in respect of the software or any related documentation, whether expressed or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose and noninfringement. In no event shall we be liable for any claim, damages or other liability, whether in an action of contract, tort or otherwise, arising from, out of or in connection with the software or documentation or the use or other dealings in the software or documentation. Any test results or performance figures are indicative and will not reflect performance under all conditions.  Any reference to any third party or third-party product, service or other resource is not an endorsement or recommendation by Block.one.  We are not responsible, and disclaim any and all responsibility and liability, for your use of or reliance on any of these resources. Third-party resources may be updated, changed or terminated at any time, so the information here may be out of date or inaccurate.  Any person using or offering this software in connection with providing software, goods or services to third parties shall advise such third parties of these license terms, disclaimers and exclusions of liability.  Block.one, EOSIO, EOSIO Labs, EOS, the heptahedron and associated logos are trademarks of Block.one.
+See [LICENSE](./LICENSE) for copyright and license terms.
 
-Wallets and related components are complex software that require the highest levels of security.  If incorrectly built or used, they may compromise users’ private keys and digital assets. Wallet applications and related components should undergo thorough security evaluations before being used.  Only experienced developers should work with this software.
+All repositories and other materials are provided subject to the terms of this [IMPORTANT](./IMPORTANT.md) notice and you must familiarize yourself with its terms.  The notice contains important information, limitations and restrictions relating to our software, publications, trademarks, third-party resources, and forward-looking statements.  By accessing any of our repositories and other materials, you accept and agree to the terms of the notice.

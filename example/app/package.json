@@ -12,22 +12,20 @@
     "Mike Manfredi"
   ],
   "dependencies": {
-    "ual-reactjs-renderer": "0.1.6",
+    "ual-reactjs-renderer": "0.2.0",
     "authenticator": "file:../authenticator",
-    "react": "16.8.3",
-    "react-dom": "16.8.3"
+    "react": "16.13.0",
+    "react-dom": "16.13.0"
   },
   "devDependencies": {
-    "react-scripts": "3.1.1"
+    "@blockone/eslint-config-blockone": "^3.0.0",
+    "eslint": "^6.8.0",
+    "react-scripts": "^3.4.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx src"
   },
   "browserslist": [
     ">0.2%",

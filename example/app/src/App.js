@@ -31,7 +31,7 @@ class TestApp extends Component {
       const accountName = await activeUser.getAccountName()
       const demoTransaction = getTransaction(accountName)
       const result = await activeUser.signTransaction(demoTransaction, { expireSeconds: 60, blocksBehind: 3 })
-      this.setState({ message: `Transfer Successful!` }, () => {
+      this.setState({ message: 'Transfer Successful!' }, () => {
         setTimeout(this.resetMessage, 5000)
       })
       console.info('SUCCESS:', result)
@@ -52,7 +52,7 @@ class TestApp extends Component {
         )
       }
       <button type='button' onClick={this.transfer} style={{ ...styles.button, ...styles.blueBG }}>
-        <p style={styles.baseText}>{`Transfer 1 EOS`}</p>
+        <p style={styles.baseText}>{'Transfer 1 EOS'}</p>
       </button>
       <button type='button' onClick={this.props.ual.logout} style={styles.logout}>
         <p>Logout</p>
